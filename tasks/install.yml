@@ -5,6 +5,7 @@
     name: "{{ item.name }}"
     state: "{{ item.state }}"
   with_items: "{{ haproxy_dependencies }}"
+  when: haproxy_dependencies | d([]) | length > 0
   tags:
     - haproxy-install-dependencies
 
@@ -12,5 +13,6 @@
   ansible.builtin.apt:
     name: "{{ haproxy_install }}"
     state: "{{ apt_install_state | default('latest') }}"
+  when: haproxy_install | d('') | length > 0
   tags:
     - haproxy-install-additional
